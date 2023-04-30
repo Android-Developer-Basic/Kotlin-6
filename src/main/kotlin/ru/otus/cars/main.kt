@@ -1,5 +1,8 @@
 package ru.otus.cars
 
+import java.lang.IllegalArgumentException
+import kotlin.random.Random
+
 fun main() {
     println("\n===> drive cars...")
     driveCars()
@@ -11,6 +14,40 @@ fun main() {
     modelSpecial()
     println("\n===> model make...")
     modelMake()
+    println("\n===> model Заправка...")
+    receiveFuel()
+}
+
+//Заправка
+fun fuelStation(car: Car){
+    try {
+        car.tankMouth.receiveFuel(Random.nextInt(0, 20))
+    } catch (e: IllegalStateException) {
+        println("Обноружена опасная ситуация $e")
+    } catch (e : IllegalArgumentException){
+        println(e.toString())
+        car.tankMouth.close();
+    }
+}
+
+fun receiveFuel() {
+    val carList = listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("555", 82)),
+        Taz
+    )
+    println("Создали машины:")
+    carList.forEach {println(it)}
+    println("Заправка автомобилей:")
+    carList.forEach {fuelStation(it)}
+    println("Результат:")
+    carList.forEach {
+        when(it){
+            is Vaz2107 -> println("Проверка уровня топлива: ${it.VazOutput().getContents()}")
+            is Vaz2108 -> println("Проверка уровня топлива: ${it.VazOutput().getContents()}")
+            Taz -> println("Оно уже не может ездить")
+        }
+    }
 }
 
 fun driveCars() {
