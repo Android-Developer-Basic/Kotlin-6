@@ -11,6 +11,30 @@ fun main() {
     modelSpecial()
     println("\n===> model make...")
     modelMake()
+    fuelCars()
+}
+
+fun fuelCars() {
+    val cars = listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("321", 78)),
+        Taz
+    )
+
+    fuel(cars)
+}
+
+fun fuelStation(car: Car) {
+    try {
+        car.receiveFuel(4)
+        println(car.toString())
+    } catch (e: IllegalStateException) {
+        println("Проблема заправки: $e")
+    }
+}
+
+fun fuel(cars: List<Car>) {
+    cars.forEach { fuelStation(it) }
 }
 
 fun driveCars() {

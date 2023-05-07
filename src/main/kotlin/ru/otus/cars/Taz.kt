@@ -11,6 +11,17 @@ object Taz : Car {
         get() = throw IllegalStateException("Тачка без номеров")
 
     /**
+     * Топливная горловина
+     */
+    override val mouth: LpgMouth = LpgMouth(TazTank)
+
+    object TazTank: Tank() {
+        override fun receiveFuel(liters: Int) {
+            throw IllegalStateException("Бак взорвался")
+        }
+    }
+
+    /**
      * Следит за машиной
      */
     override val carOutput: CarOutput
@@ -29,4 +40,6 @@ object Taz : Car {
     override fun wheelToLeft(degrees: Int) {
         throw IllegalStateException("Руля нет")
     }
+
+    override fun receiveFuel(liters: Int) { mouth.fuelLpg(liters) }
 }

@@ -12,6 +12,7 @@ class Vaz2108 private constructor() : Car {
     companion object : CarBuilder {
         override fun build(plates: Car.Plates): Vaz2108 = Vaz2108().apply {
             this.plates = plates
+            mouth = PetrolMouth(FuelTank())
         }
 
         /**
@@ -47,9 +48,15 @@ class Vaz2108 private constructor() : Car {
     override lateinit var plates: Car.Plates
         private set
 
+    /**
+     * Топливная горловина
+     */
+    override lateinit var mouth: PetrolMouth
+        private set
+
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed, fuel=${mouth.getContents()})"
     }
 
     /**
@@ -61,12 +68,18 @@ class Vaz2108 private constructor() : Car {
 
     override fun wheelToLeft(degrees: Int) { wheelAngle -= degrees }
 
+    override fun receiveFuel(liters: Int) { mouth.fuelPetrol(liters) }
+
     /**
      * Имеет доступ к внутренним данным ЭТОГО ВАЗ-2108!
      */
     inner class VazOutput : CarOutput {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2108.currentSpeed
+        }
+
+        override fun getFuelContents(): Int {
+            return mouth.getContents()
         }
     }
 }
