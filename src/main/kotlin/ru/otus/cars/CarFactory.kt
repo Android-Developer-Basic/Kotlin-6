@@ -32,20 +32,13 @@ object Togliatti : CarFactory {
     }
 
     private fun buildVaz2107(plates: Car.Plates): Car {
-        println("Запил ${Vaz2107.MODEL} в Тольятти...")
         val vaz = Vaz2107.build(plates)
-        println("Проверяем тачку...")
-        Vaz2107.test(vaz)
         println(vaz)
         return vaz
     }
 
     private fun buildVaz2108(plates: Car.Plates): Car {
-        println("Запил ${Vaz2108.MODEL} в Тольятти...")
         val vaz = Vaz2108.build(plates)
-        println("Сход-развал...")
-        Vaz2108.alignWheels(vaz)
-        println(vaz)
         return vaz
     }
 }

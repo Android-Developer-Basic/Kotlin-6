@@ -1,16 +1,35 @@
 package ru.otus.cars
 
+import ru.otus.cars.fuelSystem.LpgMouth
+import ru.otus.cars.fuelSystem.Tank
+import ru.otus.cars.fuelSystem.TankMouth
+import kotlin.math.roundToInt
+import kotlin.math.tan
 import kotlin.random.Random
 
 /**
  * Восьмерка
  */
-class Vaz2108 private constructor() : Car {
+class Vaz2108 private constructor(_tank: Tank) : Car {
+
+    private val tank: Tank
+    init {
+        tank = _tank
+    }
+
+    override val tankMouth = LpgMouth(tank)
     /**
      * Сам-себе-сборщик ВАЗ 2108.
      */
     companion object : CarBuilder {
-        override fun build(plates: Car.Plates): Vaz2108 = Vaz2108().apply {
+        override fun build(plates: Car.Plates): Vaz2108 =
+            Vaz2108(
+                Tank(
+                    _volume = 39,
+                    _model = MODEL,
+                    _currentVolume = (Random.nextDouble(1.0)*100.0).roundToInt()/100.0
+                )
+            ).apply {
             this.plates = plates
         }
 
@@ -26,7 +45,7 @@ class Vaz2108 private constructor() : Car {
         /**
          * Используем вместо STATIC
          */
-        const val MODEL = "2108"
+        val MODEL = CarModel.Vaz2108
     }
 
     /**
@@ -49,13 +68,13 @@ class Vaz2108 private constructor() : Car {
 
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2108(plates=$plates)"
     }
 
     /**
      * Делегируем приборы внутреннему классу
      */
-    override val carOutput: CarOutput = VazOutput()
+     val carOutput: CarOutput = VazOutput()
 
     override fun wheelToRight(degrees: Int) { wheelAngle += degrees }
 
@@ -67,6 +86,10 @@ class Vaz2108 private constructor() : Car {
     inner class VazOutput : CarOutput {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2108.currentSpeed
+        }
+
+        override fun getLevelFuel(): Double {
+            return tank.getContent()
         }
     }
 }

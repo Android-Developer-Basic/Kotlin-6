@@ -1,73 +1,66 @@
 package ru.otus.cars
 
+import ru.otus.cars.gasStation.Station
+import kotlin.random.Random
+
 fun main() {
-    println("\n===> drive cars...")
-    driveCars()
-    println("\n===> inner test...")
-    innerNestedCheck()
-    println("\n===> garage make...")
-    garageMake()
-    println("\n===> model special...")
-    modelSpecial()
-    println("\n===> model make...")
-    modelMake()
-}
-
-fun driveCars() {
-    val vaz1 = Togliatti.buildCar(Car.Plates("123", 77))
-    val vaz2 = Togliatti.buildCar(Car.Plates("321", 78))
-
-    println("Экземпляры класса имеют разное внутреннее состояние:")
-    vaz1.wheelToRight(10)
-    println(vaz1.toString()) // Выводит 10 и случайную скорость
-    vaz2.wheelToLeft(20)
-    println(vaz2.toString()) // Выводит -20 и случайную скорость
-}
-
-fun innerNestedCheck() {
-    val vaz = Vaz2107.build(Car.Plates("123", 77))
-    val output = vaz.VazOutput() // Создаем новый объект ИЗ ЭКЗЕМПЛЯРА МАШИНЫ
-
-    println("Скорость до проверки: ${output.getCurrentSpeed()}") // Выводит 0
-    Vaz2107.test(vaz) // Газуем...
-    println("Скорость после проверки: ${output.getCurrentSpeed()}") // Выводит случайную скорость
-}
-
-fun garageMake() {
-    val maker = "Дядя Вася"
-    val garage = object : CarFactory {
-        override fun buildCar(plates: Car.Plates): Car {
-            println("Запил Жигулей у: $maker...")
-            println("Машину не проверяем... и в продакшн...")
-            return Vaz2107.build(plates)
-        }
+    /*
+    генерим список случайных тачек
+     */
+    val listCar = emptyList<Car>().toMutableList()
+    for(i in 0..10){
+        listCar.add(modelMake())
+        println(listCar[i].toString())
     }
+    /*
+     добавляем в конце тазик
+     */
+    listCar.add(Taz)
+    println(listCar[listCar.size -1].toString())
 
-    val vaz = garage.buildCar(Car.Plates("500", 50))
-    println(vaz.toString())
+    for (car in listCar){
+        var vazOutput = when(car){
+            is Vaz2107 -> {
+                car.VazOutput()
+            }
+            is Vaz2108 -> {
+                car.VazOutput()
+            }
+            is Taz ->{
+                car.VazOutput
+            }
+        }
+        if(vazOutput.getLevelFuel() == 1.0){
+            println("у вас полный бак")
+            continue
+        }
+        println("Уровень топлива в машине ${car.toString()}: ${vazOutput.getLevelFuel()}")
+
+        Station.refueling(car, countFuel(vazOutput.getLevelFuel()))
+
+        println("Уровень топлива в машине после заправки: ${vazOutput.getLevelFuel()}")
+    }
+    println("конец")
 }
 
-fun modelSpecial() {
-    val cars = listOf(
-        Vaz2107.build(Car.Plates("123", 77)),
-        Vaz2108.build(Car.Plates("321", 78)),
-        Taz
-    )
-
-    cars.forEach { car ->
-        when(car) {
-            is Vaz2107 -> car.drdrdrdrdr()
-            is Vaz2108 -> car.zhzhzhzh()
-            Taz -> println("Таз больше не ездит!")
-        }
+fun countFuel(levelFuel: Double): Int{
+    var rnd = Random.nextInt(3)
+    return when(rnd){
+        0 -> (39 - 39 * levelFuel).toInt() //до полного
+        1 -> (39 - 39 * levelFuel).toInt() - 1//не весь
+        else -> (39 - 39 * levelFuel).toInt() +1 //больше бака
     }
 }
 
-fun modelMake() {
-    val vaz1 = Togliatti.buildCar(Vaz2107, Car.Plates("123", 77))
-    val vaz2 = Togliatti.buildCar(Vaz2108, Car.Plates("321", 78))
 
-    println("Создали машины:")
-    println(vaz1.toString()) // 2107
-    println(vaz2.toString()) // 2108
+fun modelMake(): Car {
+    val rnd = Random.nextInt(10)
+    return when{
+        rnd >=5 -> Togliatti.buildCar(Vaz2107, randomPlates())
+        else -> Togliatti.buildCar(Vaz2108, randomPlates())
+    }
+}
+
+fun randomPlates(): Car.Plates{
+    return Car.Plates((100..999).random().toString(),(10..99).random())
 }
