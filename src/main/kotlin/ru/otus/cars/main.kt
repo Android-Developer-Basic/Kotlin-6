@@ -1,5 +1,5 @@
 package ru.otus.cars
-
+import kotlin.random.Random
 fun main() {
     println("\n===> drive cars...")
     driveCars()
@@ -11,7 +11,10 @@ fun main() {
     modelSpecial()
     println("\n===> model make...")
     modelMake()
+    println("\n===> model refueling...")
+    refueling()
 }
+
 
 fun driveCars() {
     val vaz1 = Togliatti.buildCar(Car.Plates("123", 77))
@@ -71,3 +74,33 @@ fun modelMake() {
     println(vaz1.toString()) // 2107
     println(vaz2.toString()) // 2108
 }
+
+fun gasStation(car: Car){
+    try {
+        car.tankMouth.receiveFuel(15)
+    } catch (VZ: IllegalStateException) {
+        println("$VZ")
+      }
+}
+
+fun refueling() {
+    val carList = listOf(
+        Vaz2107.build(Car.Plates("777", 77)),
+        Vaz2108.build(Car.Plates("888", 88)),
+        Taz
+    )
+    println("Создали машины:")
+    carList.forEach {println(it)}
+    println("Выполняем заправку:")
+    carList.forEach {gasStation(it)}
+    carList.forEach {
+        when(it){
+           is Vaz2107 -> println("Количество топлива в баке семерки: ${it.VazOutput().getFuelContents()}")
+           is Vaz2108 -> println("Количество топлива в баке восьмерки: ${it.VazOutput().getFuelContents()}")
+           Taz -> println("Бак взорвался")
+
+        }
+    }
+}
+
+

@@ -12,6 +12,8 @@ sealed interface Car : CarInput {
     /**
      * Следит за машиной
      */
+    val tankMouth: TankMouth
+
     val carOutput: CarOutput
 
     /**
