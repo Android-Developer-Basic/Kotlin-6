@@ -11,7 +11,40 @@ fun main() {
     modelSpecial()
     println("\n===> model make...")
     modelMake()
+    println("\nЗаправляем семёрочку!")
+    refuel()
+    println("\nЗаправляем кортеж: семёрка, восьмёрка, восьмёрка...")
+    refuelCortage()
+    println("\nЗаправляем Таз...")
+    refuelTaz()
 }
+//создаём экземпляр "семёрки"
+val vaz2107Buryat = Togliatti.buildCar(Car.Plates("511",103))
+//создаём экземпляр "восьмёрки"
+val vaz2108Yaroslavecc = Vaz2108.build(Car.Plates("470", 76))
+//создаём ещё один экземпляр "восьмёрки"
+val vaz2108Kamchedal = Vaz2108.build(Car.Plates("288", 41))
+//пригоняем Таз
+val vaz210Taz = Taz
+//создаём очередь из автомобилей
+val carsCortege = listOf(vaz2107Buryat, vaz2108Yaroslavecc, vaz2108Kamchedal)
+
+/**
+ * Заправляем один автомобиль
+ */
+fun refuel() = GasStation.refuelCar(vaz2107Buryat, 17)
+fun refuelTaz() = GasStation.refuelCar(vaz210Taz, 10)
+
+
+/**
+ * Заправляем вереницу автомобилей
+ */
+fun refuelCortage() = GasStation.refuelMotorcade(carsCortege, 70)
+
+/**
+ * Заправляем Таз
+ */
+//fun refuelTaz() = GasStation.refuelCar(vaz210Taz, 5)
 
 fun driveCars() {
     val vaz1 = Togliatti.buildCar(Car.Plates("123", 77))
