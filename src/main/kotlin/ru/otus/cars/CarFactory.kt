@@ -1,5 +1,11 @@
 package ru.otus.cars
 
+import ru.otus.cars.tank.LpgLiters
+import ru.otus.cars.tank.LpgMouth
+import ru.otus.cars.tank.PetrolLiters
+import ru.otus.cars.tank.PetrolMouth
+import ru.otus.cars.tank.Tank
+
 /**
  * Автозавод
  */
@@ -33,7 +39,7 @@ object Togliatti : CarFactory {
 
     private fun buildVaz2107(plates: Car.Plates): Car {
         println("Запил ${Vaz2107.MODEL} в Тольятти...")
-        val vaz = Vaz2107.build(plates)
+        val vaz = Vaz2107.build(plates, getLpgTank())
         println("Проверяем тачку...")
         Vaz2107.test(vaz)
         println(vaz)
@@ -42,10 +48,35 @@ object Togliatti : CarFactory {
 
     private fun buildVaz2108(plates: Car.Plates): Car {
         println("Запил ${Vaz2108.MODEL} в Тольятти...")
-        val vaz = Vaz2108.build(plates)
+        val vaz = Vaz2108.build(plates, getPetrolTank())
         println("Сход-развал...")
         Vaz2108.alignWheels(vaz)
         println(vaz)
         return vaz
+    }
+    private fun getLpgTank() = object : Tank {
+        override val mouth = LpgMouth(this)
+        override var fuel: Int = 0
+
+        override fun getContents(): Int {
+            return fuel
+        }
+
+        override fun receiveFuel(litres: Int) {
+            mouth.fillWithLpg(LpgLiters(litres))
+        }
+    }
+
+    private fun getPetrolTank() = object : Tank {
+        override val mouth = PetrolMouth(this)
+        override var fuel: Int = 0
+
+        override fun getContents(): Int {
+            return fuel
+        }
+
+        override fun receiveFuel(litres: Int) {
+            mouth.fillWithPetrol(PetrolLiters(litres))
+        }
     }
 }

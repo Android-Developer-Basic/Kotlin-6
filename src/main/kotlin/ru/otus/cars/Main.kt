@@ -1,5 +1,11 @@
 package ru.otus.cars
 
+import ru.otus.cars.tank.LpgLiters
+import ru.otus.cars.tank.LpgMouth
+import ru.otus.cars.tank.PetrolLiters
+import ru.otus.cars.tank.PetrolMouth
+import ru.otus.cars.tank.Tank
+
 fun main() {
     println("\n===> drive cars...")
     driveCars()
@@ -11,6 +17,35 @@ fun main() {
     modelSpecial()
     println("\n===> model make...")
     modelMake()
+
+    println("\n===> fill with a fuel...")
+    getCarsFilled()
+}
+
+private fun getLpgTank() = object : Tank {
+    override val mouth = LpgMouth(this)
+    override var fuel: Int = 0
+
+    override fun getContents(): Int {
+        return fuel
+    }
+
+    override fun receiveFuel(litres: Int) {
+        mouth.fillWithLpg(LpgLiters(litres))
+    }
+}
+
+private fun getPetrolTank() = object : Tank {
+    override val mouth = PetrolMouth(this)
+    override var fuel: Int = 0
+
+    override fun getContents(): Int {
+        return fuel
+    }
+
+    override fun receiveFuel(litres: Int) {
+        mouth.fillWithPetrol(PetrolLiters(litres))
+    }
 }
 
 fun driveCars() {
@@ -25,11 +60,14 @@ fun driveCars() {
 }
 
 fun innerNestedCheck() {
-    val vaz = Vaz2107.build(Car.Plates("123", 77))
-    val output = vaz.VazOutput() // Создаем новый объект ИЗ ЭКЗЕМПЛЯРА МАШИНЫ
+    val vaz07 = Vaz2107.build(
+        Car.Plates("123", 77),
+        getLpgTank()
+    )
+    val output = vaz07.VazOutput() // Создаем новый объект ИЗ ЭКЗЕМПЛЯРА МАШИНЫ
 
     println("Скорость до проверки: ${output.getCurrentSpeed()}") // Выводит 0
-    Vaz2107.test(vaz) // Газуем...
+    Vaz2107.test(vaz07) // Газуем...
     println("Скорость после проверки: ${output.getCurrentSpeed()}") // Выводит случайную скорость
 }
 
@@ -39,7 +77,7 @@ fun garageMake() {
         override fun buildCar(plates: Car.Plates): Car {
             println("Запил Жигулей у: $maker...")
             println("Машину не проверяем... и в продакшн...")
-            return Vaz2107.build(plates)
+            return Vaz2107.build(plates, getLpgTank())
         }
     }
 
@@ -49,13 +87,13 @@ fun garageMake() {
 
 fun modelSpecial() {
     val cars = listOf(
-        Vaz2107.build(Car.Plates("123", 77)),
-        Vaz2108.build(Car.Plates("321", 78)),
+        Vaz2107.build(Car.Plates("123", 77), getLpgTank()),
+        Vaz2108.build(Car.Plates("321", 78), getPetrolTank()),
         Taz
     )
 
     cars.forEach { car ->
-        when(car) {
+        when (car) {
             is Vaz2107 -> car.drdrdrdrdr()
             is Vaz2108 -> car.zhzhzhzh()
             Taz -> println("Таз больше не ездит!")
@@ -70,4 +108,23 @@ fun modelMake() {
     println("Создали машины:")
     println(vaz1.toString()) // 2107
     println(vaz2.toString()) // 2108
+}
+
+fun getCarsFilled() {
+    val cars = listOf(
+        Vaz2107.build(Car.Plates("123", 77), getLpgTank()),
+        Vaz2108.build(Car.Plates("321", 78), getPetrolTank()),
+        Taz,
+        Vaz2108.build(Car.Plates("777", 177), getLpgTank()),
+    )
+
+    val gasStation = GasStationImpl()
+
+    println("Заправляем тачки:")
+
+    cars.forEach { car ->
+        println(car)
+        gasStation.fillCar(car, 20)
+        println(car)
+    }
 }

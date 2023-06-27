@@ -1,5 +1,8 @@
 package ru.otus.cars
 
+import ru.otus.cars.tank.TankMouth
+import java.lang.Exception
+
 /**
  * Тачка не едет
  */
@@ -9,6 +12,9 @@ object Taz : Car {
      */
     override val plates: Car.Plates
         get() = throw IllegalStateException("Тачка без номеров")
+
+    override val tankMouth: TankMouth
+        get() { throw Exception("Упс! Нет бака...") }
 
     /**
      * Следит за машиной
@@ -28,5 +34,9 @@ object Taz : Car {
      */
     override fun wheelToLeft(degrees: Int) {
         throw IllegalStateException("Руля нет")
+    }
+
+    override fun toString(): String {
+        return "TAZ=(..это ТАЗ, дедка)"
     }
 }
