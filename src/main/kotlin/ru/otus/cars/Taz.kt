@@ -29,4 +29,6 @@ object Taz : Car {
     override fun wheelToLeft(degrees: Int) {
         throw IllegalStateException("Руля нет")
     }
+
+    override val mouth: TankMouth = PetrolMouth(ExplosiveTank())
 }
