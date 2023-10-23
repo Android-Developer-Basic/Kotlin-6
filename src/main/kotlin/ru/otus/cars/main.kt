@@ -1,5 +1,7 @@
 package ru.otus.cars
 
+import java.lang.RuntimeException
+
 fun main() {
     println("\n===> drive cars...")
     driveCars()
@@ -11,6 +13,8 @@ fun main() {
     modelSpecial()
     println("\n===> model make...")
     modelMake()
+    println("\n===> refuel cars...")
+    refuelCars()
 }
 
 fun driveCars() {
@@ -71,3 +75,34 @@ fun modelMake() {
     println(vaz1.toString()) // 2107
     println(vaz2.toString()) // 2108
 }
+
+fun refuelCars() {
+    val gazStation = GazStationImpl()
+    val cars = listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("321", 78)),
+        Taz
+    )
+
+    cars.forEach { car ->
+        val calModelType = when (car) {
+            is Vaz2107 -> Vaz2107.MODEL
+            is Vaz2108 -> Vaz2108.MODEL
+            is Taz -> "Таз"
+        }
+        val fuelType = when (car.tankMouth) {
+            is PetrolMouth -> "бензина"
+            is LpgMouth -> "газа"
+            else -> FuelUnknownException()
+        }
+        val liters = 5
+
+        println("$calModelType прибыла на заправку, с кол-вом $fuelType равным ${car.carOutput.getFuelContents()} литров")
+
+        gazStation.fillCar(car, liters)
+
+        println("$calModelType успешно заправлена до ${car.carOutput.getFuelContents()} литров $fuelType, и отправляется в долгий путь")
+    }
+}
+
+class FuelUnknownException: RuntimeException()

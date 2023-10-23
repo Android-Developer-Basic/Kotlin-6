@@ -15,6 +15,11 @@ sealed interface Car : CarInput {
     val carOutput: CarOutput
 
     /**
+     * Горловина бака
+     */
+    val tankMouth: TankMouth
+
+    /**
      * Внутренний статический класс - номерой знак
      */
     data class Plates(val number: String, val region: Int)

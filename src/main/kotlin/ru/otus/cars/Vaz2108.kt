@@ -12,6 +12,8 @@ class Vaz2108 private constructor() : Car {
     companion object : CarBuilder {
         override fun build(plates: Car.Plates): Vaz2108 = Vaz2108().apply {
             this.plates = plates
+            this.tank = SimplePetrolTank()
+            this.tankMouth = tank.mouth
         }
 
         /**
@@ -47,9 +49,14 @@ class Vaz2108 private constructor() : Car {
     override lateinit var plates: Car.Plates
         private set
 
+    override lateinit var tankMouth: TankMouth
+        private set
+
+    private lateinit var tank: Tank
+
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed, fuelLevel=${tank.getContents()})"
     }
 
     /**
@@ -68,5 +75,7 @@ class Vaz2108 private constructor() : Car {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2108.currentSpeed
         }
+
+        override fun getFuelContents(): Int = this@Vaz2108.tank.getContents()
     }
 }
