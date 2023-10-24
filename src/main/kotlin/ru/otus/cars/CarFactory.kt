@@ -31,6 +31,10 @@ object Togliatti : CarFactory {
         }
     }
 
+    fun buildTaz(): Car{
+        return Taz
+    }
+
     private fun buildVaz2107(plates: Car.Plates): Car {
         println("Запил ${Vaz2107.MODEL} в Тольятти...")
         val vaz = Vaz2107.build(plates)
