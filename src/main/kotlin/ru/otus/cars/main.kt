@@ -1,6 +1,7 @@
 package ru.otus.cars
 
 fun main() {
+    GasStation.fuelUpCars(modelForFuellingOnGasStation())
     println("\n===> drive cars...")
     driveCars()
     println("\n===> inner test...")
@@ -55,12 +56,20 @@ fun modelSpecial() {
     )
 
     cars.forEach { car ->
-        when(car) {
+        when (car) {
             is Vaz2107 -> car.drdrdrdrdr()
             is Vaz2108 -> car.zhzhzhzh()
             Taz -> println("Таз больше не ездит!")
         }
     }
+}
+
+fun modelForFuellingOnGasStation(): List<Car> {
+    return listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("321", 78)),
+        Taz
+    )
 }
 
 fun modelMake() {

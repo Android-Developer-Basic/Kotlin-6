@@ -1,5 +1,7 @@
 package ru.otus.cars
 
+import ru.otus.cars.mouth.TankMouth
+
 /**
  * Тачка не едет
  */
@@ -15,6 +17,8 @@ object Taz : Car {
      */
     override val carOutput: CarOutput
         get() = throw IllegalStateException("Приборы сняты")
+    override val tankMouth: TankMouth
+        get() = throw IllegalStateException("the tank is not set")
 
     /**
      * Руль вправо на [degrees] градусов

@@ -1,21 +1,17 @@
 package ru.otus.cars
 
+import ru.otus.cars.mouth.TankMouth
+
 /**
  * Машина целиком
  */
 sealed interface Car : CarInput {
-    /**
-     * Номерной знак
-     */
+
     val plates: Plates
 
-    /**
-     * Следит за машиной
-     */
     val carOutput: CarOutput
 
-    /**
-     * Внутренний статический класс - номерой знак
-     */
+    val tankMouth: TankMouth
+
     data class Plates(val number: String, val region: Int)
 }

@@ -14,16 +14,11 @@ interface CarFactory {
  * Автозавод в Тольятти (он у нас один такой)
  */
 object Togliatti : CarFactory {
-    /**
-     * Выпусти машину
-     */
+
     override fun buildCar(plates: Car.Plates): Car {
         return buildVaz2107(plates)
     }
 
-    /**
-     * Выпусти машину нужной модели
-     */
     fun buildCar(builder: CarBuilder, plates: Car.Plates): Car {
         return when(builder) {
             Vaz2107 -> buildVaz2107(plates)
