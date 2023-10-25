@@ -11,6 +11,8 @@ fun main() {
     modelSpecial()
     println("\n===> model make...")
     modelMake()
+    println("\n===> refuel cars...")
+    refuelCars()
 }
 
 fun driveCars() {
@@ -70,4 +72,34 @@ fun modelMake() {
     println("Создали машины:")
     println(vaz1.toString()) // 2107
     println(vaz2.toString()) // 2108
+}
+
+fun refuelCars() {
+    val gazStation = GazStation()
+
+    val cars = listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("321", 78)),
+        Taz
+    )
+
+    cars.forEach { car ->
+        val model = when (car) {
+            is Vaz2107 -> Vaz2107.MODEL
+            is Vaz2108 -> Vaz2108.MODEL
+            is Taz -> "Таз"
+        }
+        val fuel = when (car.tankMouth) {
+            is PetrolMouth -> "бензина"
+            is LpgMouth -> "газа"
+            else -> throw IllegalStateException()
+        }
+        val liters = 30
+
+        println("$model приехала на заправку для пополнения с количеством $fuel: ${car.carOutput.getFuelContents()} литров")
+
+        gazStation.fill(car, liters)
+
+        println("$model заправилась до ${car.carOutput.getFuelContents()} литров $fuel")
+    }
 }
