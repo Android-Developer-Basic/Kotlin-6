@@ -14,6 +14,8 @@ sealed interface Car : CarInput {
      */
     val carOutput: CarOutput
 
+    val tankMouth: TankMouth
+
     /**
      * Внутренний статический класс - номерой знак
      */
