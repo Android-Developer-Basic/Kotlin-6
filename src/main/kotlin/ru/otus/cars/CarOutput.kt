@@ -8,4 +8,9 @@ interface CarOutput {
      * Скажи текущую скорость
      */
     fun getCurrentSpeed(): Int
+
+    /**
+     * Получтиь остаток топлива
+     */
+    fun getFuelContents(): Int
 }

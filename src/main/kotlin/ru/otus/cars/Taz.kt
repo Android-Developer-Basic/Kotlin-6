@@ -29,4 +29,12 @@ object Taz : Car {
     override fun wheelToLeft(degrees: Int) {
         throw IllegalStateException("Руля нет")
     }
+
+    /**
+     * Горловина бака
+     */
+    override var tankMouth = LpgMouth()
+
+    override val updateFuel =
+        UpdateFuel { throw IllegalStateException("ВЗРЫВ! Проблемы в топливной системе.") }
 }

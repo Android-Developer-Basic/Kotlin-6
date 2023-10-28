@@ -10,10 +10,10 @@ class Vaz2107 private constructor() : Car {
      * Сам-себе-сборщик ВАЗ 2107.
      */
     companion object : CarBuilder {
-        override fun build(plates: Car.Plates): Vaz2107 = Vaz2107().apply {
+        override fun build(plates: Car.Plates, tankMouth: TankMouth): Vaz2107 = Vaz2107().apply {
             this.plates = plates
+            this.tankMouth=tankMouth
         }
-
         /**
          * Проверь, ездит или нет
          */
@@ -49,7 +49,7 @@ class Vaz2107 private constructor() : Car {
 
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2107(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2107(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed, tankFuel=${tankFuel.getContents()})"
     }
 
     /**
@@ -68,5 +68,35 @@ class Vaz2107 private constructor() : Car {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2107.currentSpeed
         }
+
+        override fun getFuelContents(): Int {
+            return this@Vaz2107.tankFuel.getContents()
+        }
     }
+
+    /**
+     * Топливный бак
+     */
+    private var tankFuel = TankFuel()
+    private var litresInTank: Int = 0  // кол-во литров в баке
+
+    private inner class TankFuel : Tank {
+        override val mouth: TankMouth
+            get() = tankMouth
+
+        override fun getContents(): Int {
+            return litresInTank
+        }
+        override fun receiveFuel(liters: Int) {
+            litresInTank += liters
+        }
+    }
+
+    /**
+     * Горловина бака
+     */
+    override lateinit var tankMouth: TankMouth
+
+    override val updateFuel =
+        UpdateFuel { this.tankFuel.receiveFuel(it) }
 }

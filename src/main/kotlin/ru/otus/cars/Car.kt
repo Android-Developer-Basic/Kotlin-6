@@ -18,4 +18,10 @@ sealed interface Car : CarInput {
      * Внутренний статический класс - номерой знак
      */
     data class Plates(val number: String, val region: Int)
+
+    /**
+     * Топливный бак
+     */
+    val tankMouth : TankMouth // горловина
+    val updateFuel: UpdateFuel // вспомогательный объект для обновления информации о топливе в баке
 }

@@ -11,6 +11,8 @@ fun main() {
     modelSpecial()
     println("\n===> model make...")
     modelMake()
+    println("\n===> gas station....")
+    refillCars()
 }
 
 fun driveCars() {
@@ -25,7 +27,7 @@ fun driveCars() {
 }
 
 fun innerNestedCheck() {
-    val vaz = Vaz2107.build(Car.Plates("123", 77))
+    val vaz = Vaz2107.build(Car.Plates("123", 77), LpgMouth())
     val output = vaz.VazOutput() // Создаем новый объект ИЗ ЭКЗЕМПЛЯРА МАШИНЫ
 
     println("Скорость до проверки: ${output.getCurrentSpeed()}") // Выводит 0
@@ -39,7 +41,7 @@ fun garageMake() {
         override fun buildCar(plates: Car.Plates): Car {
             println("Запил Жигулей у: $maker...")
             println("Машину не проверяем... и в продакшн...")
-            return Vaz2107.build(plates)
+            return Vaz2107.build(plates, LpgMouth())
         }
     }
 
@@ -49,8 +51,8 @@ fun garageMake() {
 
 fun modelSpecial() {
     val cars = listOf(
-        Vaz2107.build(Car.Plates("123", 77)),
-        Vaz2108.build(Car.Plates("321", 78)),
+        Vaz2107.build(Car.Plates("123", 77), LpgMouth()),
+        Vaz2108.build(Car.Plates("321", 78), PetrolMouth()),
         Taz
     )
 
@@ -70,4 +72,14 @@ fun modelMake() {
     println("Создали машины:")
     println(vaz1.toString()) // 2107
     println(vaz2.toString()) // 2108
+}
+
+fun refillCars() {
+    val cars = listOf(
+        Vaz2107.build(Car.Plates("123", 77), LpgMouth()),
+        Vaz2108.build(Car.Plates("321", 78), PetrolMouth()),
+        Taz
+    )
+    println("Заправим машины:")
+    GasStation.refill(cars)
 }
