@@ -1,5 +1,9 @@
 package ru.otus.cars
 
+import Tank.OrdinaryTank
+import Tank.PetrolMouth
+import Tank.Tank
+import Tank.TankMouth
 import kotlin.random.Random
 
 /**
@@ -12,6 +16,7 @@ class Vaz2108 private constructor() : Car {
     companion object : CarBuilder {
         override fun build(plates: Car.Plates): Vaz2108 = Vaz2108().apply {
             this.plates = plates
+            this.mouth = PetrolMouth(tank)
         }
 
         /**
@@ -36,7 +41,7 @@ class Vaz2108 private constructor() : Car {
         println("Помчали на ${MODEL}:")
         println("Ж-ж-ж-ж....")
     }
-
+    private val tank: Tank = OrdinaryTank()
     private var wheelAngle: Int = 0 // Положение руля
     private var currentSpeed: Int = 0 // Скока жмёт
 
@@ -45,6 +50,8 @@ class Vaz2108 private constructor() : Car {
      * @see [build]
      */
     override lateinit var plates: Car.Plates
+        private set
+    override lateinit var mouth: TankMouth
         private set
 
     // Выводим состояние машины
@@ -67,6 +74,10 @@ class Vaz2108 private constructor() : Car {
     inner class VazOutput : CarOutput {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2108.currentSpeed
+        }
+
+        override fun getFuelContents(): Int {
+            return this@Vaz2108.tank.getContents()
         }
     }
 }
