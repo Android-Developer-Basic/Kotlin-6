@@ -1,16 +1,25 @@
 package ru.otus.cars
 
 fun main() {
-    println("\n===> drive cars...")
-    driveCars()
-    println("\n===> inner test...")
-    innerNestedCheck()
-    println("\n===> garage make...")
-    garageMake()
-    println("\n===> model special...")
-    modelSpecial()
-    println("\n===> model make...")
-    modelMake()
+//    println("\n===> drive cars...")
+//    driveCars()
+//    println("\n===> inner test...")
+//    innerNestedCheck()
+//    println("\n===> garage make...")
+//    garageMake()
+//    println("\n===> model special...")
+//    modelSpecial()
+//    println("\n===> model make...")
+//    modelMake()
+    GasStation.refuelCars(getCarsForGasStation())
+}
+
+
+fun getCarsForGasStation(): List<Car> {
+    return listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("321", 78))
+    )
 }
 
 fun driveCars() {
@@ -55,7 +64,7 @@ fun modelSpecial() {
     )
 
     cars.forEach { car ->
-        when(car) {
+        when (car) {
             is Vaz2107 -> car.drdrdrdrdr()
             is Vaz2108 -> car.zhzhzhzh()
             Taz -> println("Таз больше не ездит!")

@@ -12,6 +12,7 @@ class Vaz2107 private constructor() : Car {
     companion object : CarBuilder {
         override fun build(plates: Car.Plates): Vaz2107 = Vaz2107().apply {
             this.plates = plates
+            this.tankMouth = TankMouth()
         }
 
         /**
@@ -28,6 +29,9 @@ class Vaz2107 private constructor() : Car {
          */
         const val MODEL = "2107"
     }
+
+    override lateinit var tankMouth: TankMouth
+        private set
 
     /**
      * Семерка едет так
@@ -57,9 +61,37 @@ class Vaz2107 private constructor() : Car {
      */
     override val carOutput: CarOutput = VazOutput()
 
-    override fun wheelToRight(degrees: Int) { wheelAngle += degrees }
+    override fun wheelToRight(degrees: Int) {
+        wheelAngle += degrees
+    }
 
-    override fun wheelToLeft(degrees: Int) { wheelAngle -= degrees }
+    override fun wheelToLeft(degrees: Int) {
+        wheelAngle -= degrees
+    }
+
+
+    private val tank = object : Tank {
+        override val mouth: TankMouth
+            get() = tankMouth
+        private var fuel: Int = Random.nextInt(0, 25)
+
+        override fun getContents(): Int {
+            return fuel
+        }
+
+        override fun receiveFuel(liters: Int) {
+            mouth.open()
+            fuel += liters
+            mouth.close()
+        }
+
+    }
+
+    open inner class TankMouth : LpgMouth() {
+        override fun fuelLpg(liters: Int) {
+            return this@Vaz2107.tank.receiveFuel(liters)
+        }
+    }
 
     /**
      * Имеет доступ к внутренним данным ЭТОГО ВАЗ-2107!
@@ -68,5 +100,7 @@ class Vaz2107 private constructor() : Car {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2107.currentSpeed
         }
+
+        override fun getFuelContents(): Int = this@Vaz2107.tank.getContents()
     }
 }
