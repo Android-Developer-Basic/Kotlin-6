@@ -11,7 +11,17 @@ fun main() {
     modelSpecial()
     println("\n===> model make...")
     modelMake()
+    GasStation.carFilling(carList())
 }
+
+
+fun carList(): List<Car> {
+    return listOf(
+        Vaz2107.build(Car.Plates("000", 77)),
+        Vaz2108.build(Car.Plates("777", 78))
+    )
+}
+
 
 fun driveCars() {
     val vaz1 = Togliatti.buildCar(Car.Plates("123", 77))

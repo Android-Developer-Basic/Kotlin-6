@@ -4,6 +4,8 @@ package ru.otus.cars
  * Машина целиком
  */
 sealed interface Car : CarInput {
+
+    val tankMouth: TankMouth
     /**
      * Номерной знак
      */
@@ -18,4 +20,5 @@ sealed interface Car : CarInput {
      * Внутренний статический класс - номерой знак
      */
     data class Plates(val number: String, val region: Int)
+
 }
