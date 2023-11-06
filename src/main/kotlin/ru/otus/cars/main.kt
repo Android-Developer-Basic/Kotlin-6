@@ -11,6 +11,8 @@ fun main() {
     modelSpecial()
     println("\n===> model make...")
     modelMake()
+    println("\n===> gas station...")
+    fuelCarsInGasStation()
 }
 
 fun driveCars() {
@@ -70,4 +72,26 @@ fun modelMake() {
     println("Создали машины:")
     println(vaz1.toString()) // 2107
     println(vaz2.toString()) // 2108
+}
+
+fun fuelCarsInGasStation() {
+    val cars = listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("321", 78)),
+        Taz
+    )
+    val station=GasStation()
+    println("Создали машины:")
+    cars.forEach { car ->
+        println(car.toString())
+    }
+    println("Заправляем машины:")
+    cars.forEach { car ->
+        station.fuel(car,100)
+    }
+
+    println("Машины после заправки:")
+    cars.forEach { car ->
+        println(car.toString())
+    }
 }

@@ -14,6 +14,7 @@ class Vaz2107 private constructor() : Car {
             this.plates = plates
         }
 
+
         /**
          * Проверь, ездит или нет
          */
@@ -21,6 +22,8 @@ class Vaz2107 private constructor() : Car {
             println("${MODEL}: Проверка движка...")
             vaz2107.currentSpeed = Random.nextInt(0, 60)
             println("${MODEL}: Скорость: ${vaz2107.carOutput.getCurrentSpeed()}")
+            vaz2107.carTank.recieveFuel(Random.nextInt(5, 40))
+            println("${MODEL}: Топливо (${vaz2107.carOutput.getFuelType().toString()}): ${vaz2107.carOutput.getCurrentFuel()}")
         }
 
         /**
@@ -49,7 +52,8 @@ class Vaz2107 private constructor() : Car {
 
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2107(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2107(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed, " +
+                "currentFuel=${carTank.getContents()}, fuelType=${carTank.getType()})"
     }
 
     /**
@@ -68,5 +72,17 @@ class Vaz2107 private constructor() : Car {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2107.currentSpeed
         }
+        override fun getCurrentFuel(): Int {
+            return this@Vaz2107.carTank.getContents()
+        }
+
+        override fun getFuelType(): FuelType {
+            return this@Vaz2107.carTank.getType()
+        }
+
+        override fun getModel(): String = MODEL
     }
+
+    override val carTank = LpgMouth()
+
 }
