@@ -7,7 +7,7 @@ interface CarFactory {
     /**
      * Выпусти машину
      */
-    fun buildCar(plates: Car.Plates): Car
+    fun buildCar(plates: Car.Plates, tankMouth: TankMouth): Car
 }
 
 /**
@@ -17,23 +17,23 @@ object Togliatti : CarFactory {
     /**
      * Выпусти машину
      */
-    override fun buildCar(plates: Car.Plates): Car {
-        return buildVaz2107(plates)
+    override fun buildCar(plates: Car.Plates, tankMouth: TankMouth): Car {
+        return buildVaz2107(plates, tankMouth)
     }
 
     /**
      * Выпусти машину нужной модели
      */
-    fun buildCar(builder: CarBuilder, plates: Car.Plates): Car {
+    fun buildCar(builder: CarBuilder, plates: Car.Plates, tankMouth: TankMouth): Car {
         return when(builder) {
-            Vaz2107 -> buildVaz2107(plates)
+            Vaz2107 -> buildVaz2107(plates, tankMouth)
             Vaz2108 -> buildVaz2108(plates)
         }
     }
 
-    private fun buildVaz2107(plates: Car.Plates): Car {
+    private fun buildVaz2107(plates: Car.Plates, tankMouth: TankMouth): Car {
         println("Запил ${Vaz2107.MODEL} в Тольятти...")
-        val vaz = Vaz2107.build(plates)
+        val vaz = Vaz2107.build(plates, tankMouth)
         println("Проверяем тачку...")
         Vaz2107.test(vaz)
         println(vaz)
@@ -42,7 +42,7 @@ object Togliatti : CarFactory {
 
     private fun buildVaz2108(plates: Car.Plates): Car {
         println("Запил ${Vaz2108.MODEL} в Тольятти...")
-        val vaz = Vaz2108.build(plates)
+        val vaz = Vaz2108.build(plates, PetrolMouth())
         println("Сход-развал...")
         Vaz2108.alignWheels(vaz)
         println(vaz)

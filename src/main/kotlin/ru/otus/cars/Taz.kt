@@ -4,6 +4,7 @@ package ru.otus.cars
  * Тачка не едет
  */
 object Taz : Car {
+
     /**
      * Номерной знак
      */
@@ -15,6 +16,8 @@ object Taz : Car {
      */
     override val carOutput: CarOutput
         get() = throw IllegalStateException("Приборы сняты")
+    override val tankMouth: TankMouth = LpgMouth()
+
 
     /**
      * Руль вправо на [degrees] градусов

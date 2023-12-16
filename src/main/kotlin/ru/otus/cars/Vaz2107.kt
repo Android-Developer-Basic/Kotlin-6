@@ -10,9 +10,13 @@ class Vaz2107 private constructor() : Car {
      * Сам-себе-сборщик ВАЗ 2107.
      */
     companion object : CarBuilder {
-        override fun build(plates: Car.Plates): Vaz2107 = Vaz2107().apply {
+        override fun build(plates: Car.Plates, tankMouth: TankMouth): Vaz2107 = Vaz2107().apply {
             this.plates = plates
+            this.tankMouth = tankMouth
+            tank = Tank()
+            tankMouth.Builder(tank)
         }
+
 
         /**
          * Проверь, ездит или нет
@@ -21,12 +25,14 @@ class Vaz2107 private constructor() : Car {
             println("${MODEL}: Проверка движка...")
             vaz2107.currentSpeed = Random.nextInt(0, 60)
             println("${MODEL}: Скорость: ${vaz2107.carOutput.getCurrentSpeed()}")
+
         }
 
         /**
          * Используем вместо STATIC
          */
         const val MODEL = "2107"
+
     }
 
     /**
@@ -39,6 +45,7 @@ class Vaz2107 private constructor() : Car {
 
     private var wheelAngle: Int = 0 // Положение руля
     private var currentSpeed: Int = 0 // Скока жмёт
+    private var currentFuel: Int = 0
 
     /**
      * Доступно сборщику
@@ -46,6 +53,7 @@ class Vaz2107 private constructor() : Car {
      */
     override lateinit var plates: Car.Plates
         private set
+
 
     // Выводим состояние машины
     override fun toString(): String {
@@ -56,6 +64,21 @@ class Vaz2107 private constructor() : Car {
      * Делегируем приборы внутреннему классу
      */
     override val carOutput: CarOutput = VazOutput()
+    override lateinit var tankMouth: TankMouth
+    private lateinit var tank: ITank
+
+    private inner class Tank: ITank {
+        override val mouth: TankMouth = tankMouth
+
+        override fun getContents(): Int {
+            return currentFuel
+        }
+
+        override fun receiveFuel(litres: Int) {
+            currentFuel += litres
+        }
+
+    }
 
     override fun wheelToRight(degrees: Int) { wheelAngle += degrees }
 
@@ -68,5 +91,10 @@ class Vaz2107 private constructor() : Car {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2107.currentSpeed
         }
+
+        override fun getFuelContents(): Int {
+            return this@Vaz2107.currentFuel
+        }
+
     }
 }

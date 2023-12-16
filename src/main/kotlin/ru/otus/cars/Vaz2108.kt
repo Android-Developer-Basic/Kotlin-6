@@ -10,8 +10,11 @@ class Vaz2108 private constructor() : Car {
      * Сам-себе-сборщик ВАЗ 2108.
      */
     companion object : CarBuilder {
-        override fun build(plates: Car.Plates): Vaz2108 = Vaz2108().apply {
+        override fun build(plates: Car.Plates, tankMouth: TankMouth): Vaz2108 = Vaz2108().apply {
             this.plates = plates
+            this.tankMouth = tankMouth
+            tank = Tank()
+            tankMouth.Builder(tank)
         }
 
         /**
@@ -39,7 +42,7 @@ class Vaz2108 private constructor() : Car {
 
     private var wheelAngle: Int = 0 // Положение руля
     private var currentSpeed: Int = 0 // Скока жмёт
-
+    private var currentFuel: Int = 0
     /**
      * Доступно сборщику
      * @see [build]
@@ -52,10 +55,26 @@ class Vaz2108 private constructor() : Car {
         return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
     }
 
+    private inner class Tank: ITank {
+        override val mouth: TankMouth = tankMouth
+
+        override fun getContents(): Int {
+            return currentFuel
+        }
+
+        override fun receiveFuel(litres: Int) {
+            currentFuel += litres
+        }
+
+    }
+
     /**
      * Делегируем приборы внутреннему классу
      */
     override val carOutput: CarOutput = VazOutput()
+
+    override lateinit var tankMouth: TankMouth
+    private lateinit var tank: ITank
 
     override fun wheelToRight(degrees: Int) { wheelAngle += degrees }
 
@@ -67,6 +86,10 @@ class Vaz2108 private constructor() : Car {
     inner class VazOutput : CarOutput {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2108.currentSpeed
+        }
+
+        override fun getFuelContents(): Int {
+            return this@Vaz2108.currentFuel
         }
     }
 }
