@@ -1,6 +1,7 @@
 package ru.otus.cars
 
 fun main() {
+    GasStation.fuelUpCars(modelForFuel())
     println("\n===> drive cars...")
     driveCars()
     println("\n===> inner test...")
@@ -11,6 +12,15 @@ fun main() {
     modelSpecial()
     println("\n===> model make...")
     modelMake()
+
+}
+
+fun modelForFuel(): List<Car>{
+    return listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("321", 78)),
+        Taz
+    )
 }
 
 fun driveCars() {
@@ -70,4 +80,24 @@ fun modelMake() {
     println("Создали машины:")
     println(vaz1.toString()) // 2107
     println(vaz2.toString()) // 2108
+}
+
+object GasStation {
+    fun fuelUpCars(cars: List<Car>) {
+        try {
+            cars.forEachIndexed { index, car ->
+                val fuelAmount = when (car.tankMouth) {
+                    is LpgMouth -> 100
+                    is PetrolMouth -> 250
+                    else -> throw IllegalArgumentException("Неверный тип бака.")
+                }
+                car.tankMouth.fuelUp(fuelAmount)
+                println(car)
+            }
+        } catch (e: IllegalArgumentException) {
+            println("Неверный тип бака.: ${e.message}")
+        } catch (e: Exception) {
+            println("Произошла ошибка: ${e.message}")
+        }
+    }
 }

@@ -13,6 +13,7 @@ sealed interface Car : CarInput {
      * Следит за машиной
      */
     val carOutput: CarOutput
+    val tankMouth: TankMouth
 
     /**
      * Внутренний статический класс - номерой знак

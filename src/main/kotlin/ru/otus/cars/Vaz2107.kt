@@ -39,6 +39,9 @@ class Vaz2107 private constructor() : Car {
 
     private var wheelAngle: Int = 0 // Положение руля
     private var currentSpeed: Int = 0 // Скока жмёт
+    private var tank = LpgTank()
+
+    override val tankMouth: TankMouth = LpgMouth(tank)
 
     /**
      * Доступно сборщику
@@ -67,6 +70,10 @@ class Vaz2107 private constructor() : Car {
     inner class VazOutput : CarOutput {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2107.currentSpeed
+        }
+
+        override fun getFuelContents(): Int{
+            return this@Vaz2107.tank.getContents()
         }
     }
 }
